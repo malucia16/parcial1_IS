@@ -1,0 +1,39 @@
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php
+    ports:
+      - "8000:80"
+    volumes: 
+      - ./app_laravel:/var/www/html  # Aquí mapeamos la carpeta local app_laravel
+    working_dir: /var/www/html
+    tty: true
+    stdin_open: true
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: laravel
+    volumes:
+      - dbdata:/var/lib/mysql
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest.
+    container_name: phpmyadmin
+    ports:
+      - "8080:80"
+    volumes:
+      - dbdata:/var/lib/mysql
+  
+
+
+volumes:
+  dbdata:
